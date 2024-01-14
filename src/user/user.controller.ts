@@ -1,4 +1,5 @@
-import { AdminRoles, UserRoles } from './constants/roles.constants';
+import { AdminRoles } from './constants/roles.constants';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { GetUserDto } from './dto/get-user.dto';
 import { Roles } from 'src/decorators/roles.decorator';
@@ -15,7 +16,6 @@ import {
     Post,
     UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/guards/auth.guard';
 @UseGuards(AuthGuard)
 @Controller('user')
 export class UserController {
