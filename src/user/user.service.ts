@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UseGuards } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -12,7 +12,7 @@ export class UserService {
     async create(data: CreateUserDto): Promise<GetUserDto> {
         const salt = await bcrypt.genSalt();
         data.password = await bcrypt.hash(data.password, salt);
-        return this.prisma.users.create({
+        return this.prisma.user.create({
             data,
             select: {
                 id: true,
@@ -20,12 +20,13 @@ export class UserService {
                 username: true,
                 createdAt: true,
                 role: true,
+                preferences: true,
             },
         });
     }
 
     async findAll(): Promise<GetUserDto[]> {
-        return this.prisma.users.findMany({
+        return this.prisma.user.findMany({
             select: {
                 id: true,
                 email: true,
@@ -38,11 +39,11 @@ export class UserService {
     }
 
     async findOne(id: string): Promise<GetUserDto> {
-        if (!(await this.prisma.users.findUnique({ where: { id } }))) {
+        if (!(await this.prisma.user.findUnique({ where: { id } }))) {
             throw new NotFoundException(`User not found`);
         }
 
-        return this.prisma.users.findUnique({
+        return this.prisma.user.findUnique({
             where: { id },
             select: {
                 id: true,
@@ -59,7 +60,7 @@ export class UserService {
         id: string,
         updateUserDto: UpdateUserDto,
     ): Promise<GetUserDto> {
-        if (!(await this.prisma.users.findUnique({ where: { id } }))) {
+        if (!(await this.prisma.user.findUnique({ where: { id } }))) {
             throw new NotFoundException(`User not found`);
         }
 
@@ -68,7 +69,7 @@ export class UserService {
             updateUserDto.password,
             salt,
         );
-        return this.prisma.users.update({
+        return this.prisma.user.update({
             where: { id },
             data: { ...updateUserDto, updatedAt: new Date() },
             select: {
@@ -78,6 +79,7 @@ export class UserService {
                 createdAt: true,
                 updatedAt: true,
                 role: true,
+                preferences: true,
             },
         });
     }
@@ -87,7 +89,7 @@ export class UserService {
             throw new NotFoundException(`User not found`);
         }
 
-        return this.prisma.users.delete({
+        return this.prisma.user.delete({
             where: { id },
             select: {
                 id: true,

@@ -1,3 +1,10 @@
+import { AdminRoles, UserRoles } from './constants/roles.constants';
+import { CreateUserDto } from './dto/create-user.dto';
+import { GetUserDto } from './dto/get-user.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserService } from './user.service';
 import {
     Body,
     Controller,
@@ -8,21 +15,21 @@ import {
     Post,
     UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { GetUserDto } from './dto/get-user.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
-
+@UseGuards(AuthGuard)
 @Controller('user')
 export class UserController {
     constructor(private readonly usersService: UserService) {}
 
+    @UseGuards(RolesGuard)
+    @Roles(AdminRoles)
     @Post()
     create(@Body() data: CreateUserDto): Promise<GetUserDto> {
         return this.usersService.create(data);
     }
 
+    @UseGuards(RolesGuard)
+    @Roles(AdminRoles)
     @Get()
     findAll(): Promise<GetUserDto[]> {
         return this.usersService.findAll();
@@ -41,6 +48,8 @@ export class UserController {
         return this.usersService.update(id, data);
     }
 
+    @UseGuards(RolesGuard)
+    @Roles(AdminRoles)
     @Delete(':id')
     remove(@Param('id') id: string): Promise<GetUserDto> {
         return this.usersService.remove(id);
