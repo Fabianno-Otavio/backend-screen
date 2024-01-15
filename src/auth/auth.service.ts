@@ -31,6 +31,8 @@ export class AuthService {
             throw new UnauthorizedException('E-mail e/ou senha inválidos.');
         }
 
+        delete user.password;
+
         return this.createToken(user);
     }
 
