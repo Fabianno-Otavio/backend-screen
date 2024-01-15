@@ -56,22 +56,17 @@ export class UserService {
         });
     }
 
-    async update(
-        id: string,
-        updateUserDto: UpdateUserDto,
-    ): Promise<GetUserDto> {
+    async update(id: string, data: UpdateUserDto): Promise<GetUserDto> {
         if (!(await this.prisma.user.findUnique({ where: { id } }))) {
             throw new NotFoundException(`User not found`);
         }
 
         const salt = await bcrypt.genSalt();
-        updateUserDto.password = await bcrypt.hash(
-            updateUserDto.password,
-            salt,
-        );
+        data.password = await bcrypt.hash(data.password, salt);
+
         return this.prisma.user.update({
             where: { id },
-            data: { ...updateUserDto, updatedAt: new Date() },
+            data: { ...data, updatedAt: new Date() },
             select: {
                 id: true,
                 email: true,

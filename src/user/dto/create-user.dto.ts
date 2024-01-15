@@ -9,12 +9,18 @@ import {
 export class CreateUserDto {
     @IsString()
     username: string;
+
     @IsEmail()
     email: string;
+
     @IsStrongPassword({
         minLength: 8,
     })
     password: string;
+
     @IsOptional()
     preferences?: JsonValue;
+
+    @IsOptional()
+    item?: any;
 }
