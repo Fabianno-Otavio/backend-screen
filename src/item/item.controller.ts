@@ -23,7 +23,7 @@ export class ItemController {
         return this.itemService.findAll();
     }
 
-    @Get()
+    @Get(':id')
     getItemsByUser(@Param() id: string) {
         return this.itemService.findAllByUser(id);
     }
