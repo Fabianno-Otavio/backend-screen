@@ -19,7 +19,7 @@ export class AuthService {
         username: string;
         password: string;
     }): Promise<{ access_token: string }> {
-        const user = await this.prisma.users.findFirst({
+        const user = await this.prisma.user.findFirst({
             where: {
                 username: data.username,
             },
