@@ -13,7 +13,7 @@ import { UserModule } from 'src/user/user.module';
         UserModule,
         PrismaModule,
     ],
-    exports: [],
+    exports: [AuthModule],
     controllers: [AuthController],
     providers: [AuthService],
 })
