@@ -1,4 +1,4 @@
-import { IsMongoId, IsNumber, IsString } from 'class-validator';
+import { IsMongoId, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateItemDto {
     @IsString()
@@ -7,12 +7,15 @@ export class CreateItemDto {
     @IsNumber()
     price: number;
 
+    @IsOptional()
     @IsString()
     unity: string;
 
+    @IsOptional()
     @IsMongoId()
     categoryId: string;
 
-    @IsMongoId()
-    userId: string;
+    @IsOptional()
+    @IsString()
+    categoryName: string;
 }

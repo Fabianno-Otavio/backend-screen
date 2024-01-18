@@ -1,14 +1,13 @@
-import { Module } from '@nestjs/common';
-import { ItemService } from './item.service';
+import { GuardsModule } from 'src/guards/guards.module';
 import { ItemController } from './item.controller';
-import { PrismaModule } from 'src/prisma/prisma.module';
-import { AuthService } from 'src/auth/auth.service';
-import { JwtModule } from '@nestjs/jwt';
-import { UserModule } from 'src/user/user.module';
+import { ItemService } from './item.service';
+import { Module } from '@nestjs/common';
+import { CategoryModule } from 'src/category/category.module';
 
 @Module({
-    imports: [PrismaModule, JwtModule, UserModule],
-    providers: [ItemService, AuthService],
+    imports: [GuardsModule, CategoryModule],
+    exports: [ItemService],
+    providers: [ItemService],
     controllers: [ItemController],
 })
 export class ItemModule {}
