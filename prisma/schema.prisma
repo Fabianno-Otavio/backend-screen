@@ -34,7 +34,7 @@ model Category {
 model Item {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
-  price      Int
+  price      Float
   unity      String?  @default("un")
   categoryId String   @db.ObjectId
   category   Category @relation(fields: [categoryId], references: [id])
