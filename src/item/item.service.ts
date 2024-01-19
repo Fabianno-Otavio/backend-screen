@@ -94,4 +94,12 @@ export class ItemService {
             },
         });
     }
+
+    async deleteAllUserItems(userId: string) {
+        return this.prisma.item.deleteMany({
+            where: {
+                userId,
+            },
+        });
+    }
 }

@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     Param,
     Post,
@@ -44,5 +45,17 @@ export class ItemController {
         @Body() data: UpdateItemDto,
     ) {
         return this.itemService.updateItem(userId, itemId, data);
+    }
+
+    @Delete(':id')
+    deleteItem(@Param('id') itemId: string) {
+        return this.itemService.deleteItem(itemId);
+    }
+
+    @UseGuards(RolesGuard)
+    @Roles(AdminRoles)
+    @Delete(':id')
+    deleteAllUserItems(@Param('id') userId: string) {
+        return this.itemService.deleteAllUserItems(userId);
     }
 }
