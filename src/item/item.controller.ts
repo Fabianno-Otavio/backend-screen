@@ -54,7 +54,7 @@ export class ItemController {
 
     @UseGuards(RolesGuard)
     @Roles(AdminRoles)
-    @Delete(':id')
+    @Delete('deleteall/:id')
     deleteAllUserItems(@Param('id') userId: string) {
         return this.itemService.deleteAllUserItems(userId);
     }
