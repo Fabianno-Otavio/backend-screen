@@ -11,6 +11,11 @@ export class CategoryService {
             where: {
                 userId,
             },
+            select: {
+                items: true,
+                id: true,
+                name: true,
+            },
         });
     }
 
